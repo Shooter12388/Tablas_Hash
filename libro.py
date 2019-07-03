@@ -3,7 +3,8 @@ class Libro:
         self.nombre = nombre
         self.autor = autor
         self.editorial = editorial
-    def __eq__(self,libro):
+
+    def __eq__(self, libro):
         if type(libro) == Libro:
             if self.nombre == libro.nombre:
                 return True

@@ -20,8 +20,11 @@ class Inicio(QMainWindow, Ui_MainWindow):
         self.setFixedSize(self.size())
 
         self.hash = hash_tabla()
-        for libro in leer('libros.lib'):
-            self.hash.insertar(libro)
+
+        datos = leer("libros.lib")
+        if datos:
+            for libro in datos:
+                self.hash.insertar(libro)
 
         self.anadirboton.clicked.connect(self.agregarlibro)
         self.buscarboton.clicked.connect(self.buscarlibro)
@@ -33,6 +36,7 @@ class Inicio(QMainWindow, Ui_MainWindow):
     def agregarlibro(self):
         agregar = AgregarLibro(self.hash)
         agregar.exec()
+
 
 qtCreatorFile = "Agregar.ui"
 Ui_Dialog, QtBaseClass = uic.loadUiType(qtCreatorFile)
@@ -78,13 +82,18 @@ class AgregarLibro(QDialog, Ui_Dialog):
     def eliminarLibro(self):
         libro = self.listWidget.currentItem()
         if libro is not None:
-            self.hash.eliminar(libro.text())
-            libro = Libro(*libro.text().split('/'))
+
+            datos = libro.text().split("/")
+            self.hash.eliminar(datos[0])
+
+            libro = Libro(*datos)
             eliminar("libros.lib", libro)
             self.listWidget.takeItem(self.listWidget.currentRow())
 
+
 qtCreatorFile = "IngresarLibro.ui"
 Ui_Dialog, QtBaseClass = uic.loadUiType(qtCreatorFile)
+
 
 class IngresarLibro(QDialog, Ui_Dialog):
     def __init__(self):
@@ -101,7 +110,7 @@ class IngresarLibro(QDialog, Ui_Dialog):
         autor = self.lineEdit_2.text()
         editorial = self.lineEdit_3.text()
         self.libro = Libro(nombre, autor, editorial)
-        añadir("libros.lib",self.libro)
+        añadir("libros.lib", self.libro)
 
 
 qtCreatorFile = "Buscar.ui"
@@ -123,13 +132,19 @@ class BuscarLibro(QDialog, Ui_Dialog):
         libro = self.hash.buscar(texto)
 
         if libro is not None:
-            mensaje = Mensaje('Nombre = ' + libro.nombre + "\n"
-                + 'Autor = ' + libro.autor+"\n"
-                + 'Editorial = ' + libro.editorial
+            mensaje = Mensaje(
+                "Nombre="
+                + libro.nombre
+                + "\n"
+                + "Autor="
+                + libro.autor
+                + "\n"
+                + "Editorial="
+                + libro.editorial
             )
             mensaje.exec()
         else:
-            mensaje = Mensaje('No se encontro el libro')
+            mensaje = Mensaje("No se encontro el libro")
             mensaje.exec()
 
 
@@ -145,7 +160,6 @@ class Mensaje(QDialog, Ui_Dialog):
         self.setFixedSize(self.size())
 
         self.librobuscado.setText(texto)
-
 
 
 if __name__ == "__main__":

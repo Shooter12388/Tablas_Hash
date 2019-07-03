@@ -7,7 +7,8 @@ def escribir(ruta, libro):
 
 
 def leer(ruta):
-    return pickle.load(open(ruta, "rb"))
+    if os.path.exists(ruta):
+        return pickle.load(open(ruta, "rb"))
 
 
 def añadir(ruta, libro):

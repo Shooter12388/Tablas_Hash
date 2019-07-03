@@ -1,5 +1,6 @@
 from libro import Libro
 
+
 class hash_tabla:
     def __init__(self):
         self.tabla = [None] * 127
@@ -29,7 +30,7 @@ class hash_tabla:
             print("No hay elementos con ese valor", valor)
         else:
             print("Elemento con valor", valor, "eliminado")
-            self.tabla[hash] is None
+            self.tabla[hash] = None
 
     def __iter__(self):
         i = 0
